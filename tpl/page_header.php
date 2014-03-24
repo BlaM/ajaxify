@@ -9,5 +9,5 @@
   <body>
 
 <nav data-ajaxlinks>
-<span style="float:right;"><?PHP echo date('Y-m-d H:i:s'); ?></span><a href="index.php">Home</a> | <a href="secret.php">Secret</a>
+<span style="float:right;"><?PHP echo date('Y-m-d H:i:s'); ?></span><a href="index.php">Home</a> | <a href="secret.php">Secret</a> | <a href="subdir/some.php">In Subdir</a> | <a href="plainhtml.html">Static Content</a>
 </nav>

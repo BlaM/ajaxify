@@ -69,7 +69,7 @@ function ajaxify(element) {
 			'success': function(d) {
 				var $res = refreshContent(d);
 				if (!toolRequest) {
-					pushstate({'href':href, 'data':d}, '', href);
+					pushstate({'href':href, 'data':d}, null, href);
 				}
 			}
 		})
