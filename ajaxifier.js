@@ -17,7 +17,8 @@ function ajaxify(element) {
 	}
 
 	var refreshContent = function(data) {
-		var $res = $('<html>').html(data);
+		var $res = $('<div>').html(data);
+
 		$res.find('[data-ajaxified]').each(function() {
 			var $element = $(this);
 			var ajaxified_handle = $element.data('ajaxified');
@@ -25,17 +26,14 @@ function ajaxify(element) {
 			$('[data-ajaxified=' + ajaxified_handle + ']').replaceWith($element);
 		});
 
-		var $title = $res.find('head title');
-		console.log($title);
-		if ($title.length > 0) {
-			$('head title').text($title.text());
-		}
+		var $title = $res.find('title:first');
+		if ($title.length) document.title = $title.text();
 		return $res;
 	}
 
 	$(window).on('popstate', function(e, f) {
 		var oldstate = e.originalEvent.state;
-		if (oldstate.href) {
+		if (oldstate && oldstate.href) {
 			refreshContent(oldstate.data);
 		}
 	});
