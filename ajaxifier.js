@@ -1,3 +1,8 @@
+// ajaxify
+// version 0.0.1
+// (c) 2014 Dominik Deobald <http://www.deobald.org>
+// released under the MIT license
+
 function ajaxify(element) {
 	if (!history.pushState) return false; // Will not work, so fall back to default
 
