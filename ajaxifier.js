@@ -12,9 +12,14 @@ function ajaxify(element) {
 
 	element = element || document.body;
 
-	$(element).on('click', '[data-ajaxlinks] a,a[data-ajaxlinks]', function(e) {
+	$(element).on('click', '[data-ajaxlink] a,a[data-ajaxlink]', function(e) {
 		e.preventDefault();
 		self.call( $(this).attr('href') );
+	});
+
+	$(element).on('submit', 'form[data-ajaxform]', function(e) {
+		e.preventDefault();
+		self.call( $(this).attr('action'), $(this).attr('method'), $(this).serializeArray() );
 	});
 
 	var pushstate = function(state, title, url) {
@@ -74,6 +79,12 @@ function ajaxify(element) {
 			'success': function(d) {
 				var $res = refreshContent(d);
 				if (!toolRequest) {
+//					console.log(
+					if (method.toLowerCase() == 'get' && data.length > 0) {
+						var ioq = href.indexOf('?');
+						if (ioq != -1) href = href.substr(0, ioq - 1);
+						href += '?' + $.param(data);
+					}
 					pushstate({'href':href, 'data':d}, null, href);
 				}
 			}
