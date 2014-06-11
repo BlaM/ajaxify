@@ -1,5 +1,5 @@
 // ajaxify
-// version 0.0.1
+// version 0.0.2
 // (c) 2014 Dominik Deobald <http://www.deobald.org>
 // released under the MIT license
 
@@ -53,7 +53,9 @@ function ajaxify(element) {
 		data = data || {};
 		toolRequest = toolRequest || false;
 
-		var state = {};
+		var state = {
+			'ajaxify-version': 1.0
+		};
 
 		$('[data-ajaxified]').each(function() {
 			var $this = $(this);
@@ -61,10 +63,11 @@ function ajaxify(element) {
 			var version = $(this).data('ajaxifystate');
 			if (key && version) state[key] = version;
 		});
-		
+
 		$.ajax({
 			'url': href,
 			'type': method,
+			'cache': false,
 			'headers': {
 				'X-Ajaxify': JSON.stringify(state)
 			},
@@ -78,7 +81,16 @@ function ajaxify(element) {
 			'dataType': 'html',
 			'success': function(d) {
 				var $res = refreshContent(d);
-				if (!toolRequest) {
+				var $canonical = $res.find('link[rel="canonical"]');
+				var forced_href = null;
+
+				if ($canonical) {
+					forced_href = $canonical.attr('href');
+				}
+
+				if (forced_href) {
+					pushstate({'href':forced_href, 'data':d}, null, forced_href);
+				} else if (!toolRequest) {
 //					console.log(
 					if (method.toLowerCase() == 'get' && data.length > 0) {
 						var ioq = href.indexOf('?');
